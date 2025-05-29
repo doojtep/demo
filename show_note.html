@@ -4,14 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>โน้ต</title>
-
-  <!-- Web App Manifest -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#ffd6ec" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <link rel="icon" sizes="192x192" href="icon.png" />
-
   <style>
     @font-face {
       font-family: 'FkAprilBold';
@@ -44,10 +36,14 @@
       color: #d63384;
       margin-bottom: 10px;
     }
-    button.delete-btn {
+    .note-buttons {
       position: absolute;
       top: 12px;
       right: 12px;
+      display: flex;
+      gap: 8px;
+    }
+    button {
       background-color: #ff4081;
       border: none;
       border-radius: 25px;
@@ -57,8 +53,11 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    button.delete-btn:hover {
+    button:hover {
       background-color: #d81b60;
+    }
+    .lock-btn.locked {
+      background-color: #6c757d;
     }
     a.back-link {
       display: block;
@@ -72,6 +71,15 @@
     a.back-link:hover {
       text-decoration: underline;
     }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -82,7 +90,6 @@
   <a href="note.html" class="back-link">➤ เพิ่มโพสโน๊ต</a>
 
   <script>
-    // โหลดโน้ตจาก localStorage
     function loadNotes() {
       const container = document.getElementById('notesContainer');
       const notes = JSON.parse(localStorage.getItem('notes') || "[]");
@@ -99,21 +106,43 @@
 
         const dateDiv = document.createElement('div');
         dateDiv.classList.add('note-date');
-        dateDiv.textContent = `วันที่: ${note.date}`;
+        dateDiv.textContent = `📅 วันที่: ${note.date}`;
 
         const noteTextDiv = document.createElement('div');
         noteTextDiv.textContent = note.note;
 
+        const btnGroup = document.createElement('div');
+        btnGroup.classList.add('note-buttons');
+
+        // ปุ่มลบ
         const deleteBtn = document.createElement('button');
-        deleteBtn.classList.add('delete-btn');
         deleteBtn.textContent = 'ลบ';
         deleteBtn.onclick = () => {
+          if (note.locked) {
+            alert('⛔ โน้ตนี้ถูกล็อกอยู่ กรุณาปลดล็อกก่อนลบ');
+            return;
+          }
           if (confirm('ต้องการลบโพสอิทนี้จริงหรือไม่?')) {
             deleteNote(index);
           }
         };
 
-        noteDiv.appendChild(deleteBtn);
+        // ปุ่มล็อก/ปลดล็อก
+        const lockBtn = document.createElement('button');
+        lockBtn.classList.add('lock-btn');
+        lockBtn.textContent = note.locked ? '🔒' : '🔓';
+        if (note.locked) lockBtn.classList.add('locked');
+
+        lockBtn.onclick = () => {
+          notes[index].locked = !notes[index].locked;
+          localStorage.setItem('notes', JSON.stringify(notes));
+          loadNotes();
+        };
+
+        btnGroup.appendChild(lockBtn);
+        btnGroup.appendChild(deleteBtn);
+
+        noteDiv.appendChild(btnGroup);
         noteDiv.appendChild(dateDiv);
         noteDiv.appendChild(noteTextDiv);
 
@@ -129,13 +158,6 @@
     }
 
     loadNotes();
-
-    // ลงทะเบียน Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('Service Worker ลงทะเบียนแล้ว:', reg.scope))
-        .catch(err => console.error('ลงทะเบียน Service Worker ล้มเหลว:', err));
-    }
   </script>
 </body>
 </html>
