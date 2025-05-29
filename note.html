@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>เพิ่มโน้ตของคุณ</title>
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffd6ec" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="icon" sizes="192x192" href="icon.png" />
+
   <style>
     @font-face {
       font-family: 'FkAprilBold';
@@ -111,7 +119,6 @@
       }
     }
 
-    /* Responsive */
     @media (max-width: 600px) {
       body {
         padding: 20px;
@@ -133,7 +140,6 @@
 </head>
 <body>
 
-  <!-- หิมะ -->
   <div class="snow-container" id="snow-container"></div>
 
   <h1>🎂 เพิ่มโน้ตของคุณ 🎈</h1>
@@ -184,6 +190,13 @@
       localStorage.setItem('notes', JSON.stringify(notes));
 
       window.location.href = "show_note.html";
+    }
+
+    // ลงทะเบียน Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker ลงทะเบียนแล้ว:', reg.scope))
+        .catch(err => console.error('ลงทะเบียน Service Worker ล้มเหลว:', err));
     }
   </script>
 </body>
