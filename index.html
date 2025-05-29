@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>สุขสันต์วันเกิดคับ หม่ามี๊!</title>
+  <link rel="icon" type="image/png" href="img/icon-removebg-preview.png" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Sarabun&display=swap');
 
@@ -168,7 +169,6 @@
       position: relative;
     }
 
-    /* Responsive: สำหรับจอเล็ก เช่น มือถือ */
     @media (max-width: 600px) {
       .card {
         padding: 20px 15px;
@@ -217,82 +217,4 @@
   </div>
 
   <!-- ข้อความของขวัญ -->
-  <div id="gift-message">ขอบคุณที่เกิดมาสร้างรอยยิ้มให้ทุกคนนะครับ! 💝 สุขสันต์วันเกิดอีกครั้งนะครับผม!</div>
-
-  <!-- Script (ไม่มีการเปลี่ยน) -->
-  <script>
-    const imageSrc = "img/icon-removebg-preview.png";
-    const container = document.getElementById("snow-container");
-
-    function createSnowImage() {
-      const img = document.createElement("img");
-      img.src = imageSrc;
-      img.classList.add("falling");
-      img.style.left = Math.random() * window.innerWidth + "px";
-      const size = Math.random() * 20 + 60;
-      img.style.width = size + "px";
-      img.style.animationDuration = (Math.random() * 3 + 5) + "s";
-      container.appendChild(img);
-      setTimeout(() => img.remove(), 10000);
-    }
-    setInterval(createSnowImage, 300);
-
-    function createCake() {
-      const cake = document.createElement("img");
-      cake.src = "img/profile.jpg";
-      cake.classList.add("cake");
-      cake.style.left = (window.innerWidth / 2 + (Math.random() * 100 - 50)) + "px";
-      document.body.appendChild(cake);
-      setTimeout(() => cake.remove(), 5000);
-    }
-
-    function createFirework(x, y) {
-      const firework = document.createElement("div");
-      firework.classList.add("firework");
-      firework.style.left = (x - 75) + "px";
-      firework.style.top = (y - 75) + "px";
-      firework.style.opacity = 1;
-
-      for (let i = 0; i < 12; i++) {
-        const particle = document.createElement("div");
-        particle.classList.add("particle");
-        const angle = (360 / 12) * i;
-        const radius = 80 + Math.random() * 20;
-        const rad = angle * (Math.PI / 180);
-        particle.style.setProperty('--x', (Math.cos(rad) * radius) + "px");
-        particle.style.setProperty('--y', (Math.sin(rad) * radius) + "px");
-        particle.style.animationDelay = (i * 0.05) + "s";
-        firework.appendChild(particle);
-      }
-
-      document.body.appendChild(firework);
-      setTimeout(() => firework.remove(), 1100);
-    }
-
-    const btnOpenGift = document.getElementById('btn-open-gift');
-    const giftMessage = document.getElementById('gift-message');
-
-    btnOpenGift.addEventListener('click', () => {
-      giftMessage.style.display = 'block';
-      createCake();
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 3;
-
-      for (let i = 0; i < 5; i++) {
-        setTimeout(() => {
-          const offsetX = (Math.random() * 200) - 100;
-          const offsetY = (Math.random() * 100) - 50;
-          createFirework(centerX + offsetX, centerY + offsetY);
-        }, i * 400);
-      }
-
-      btnOpenGift.disabled = true;
-      btnOpenGift.textContent = "🎉 ของขวัญถูกเปิดแล้ว";
-
-      setTimeout(() => {
-        window.location.href = "note.html";
-      }, 3000);
-    });
-  </script>
-</body>
-</html>
+  <div id="gift-message">ขอบคุณที่เกิดมา
