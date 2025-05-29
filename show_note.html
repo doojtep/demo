@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>โน้ต</title>
+  <style>
+    @font-face {
+      font-family: 'FkAprilBold';
+      src: url('font/FkAprilBold.ttf') format('truetype');
+    }
+    body {
+      font-family: 'FkAprilBold', sans-serif;
+      background: linear-gradient(to right, #ffe1f0, #ffd6ec);
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+      color: #a64f79;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.2rem;
+    }
+    .note {
+      background-color: #fff0f6;
+      border: 2px solid #f8a5c2;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      white-space: pre-wrap; /* แสดงขึ้นบรรทัดใหม่ตามข้อความ */
+    }
+    .note-date {
+      font-size: 14px;
+      color: #d63384;
+      margin-bottom: 10px;
+    }
+    button.delete-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background-color: #ff4081;
+      border: none;
+      border-radius: 25px;
+      color: white;
+      padding: 6px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button.delete-btn:hover {
+      background-color: #d81b60;
+    }
+    a.back-link {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      color: #a64f79;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>โน้ตประจำวัน</h1>
+
+  <div id="notesContainer"></div>
+
+  <a href="note.html" class="back-link">➤ เพิ่มโพสโน๊ต</a>
+
+  <script>
+    // โหลดโน้ตจาก localStorage
+    function loadNotes() {
+      const container = document.getElementById('notesContainer');
+      const notes = JSON.parse(localStorage.getItem('notes') || "[]");
+      container.innerHTML = '';
+
+      if (notes.length === 0) {
+        container.innerHTML = '<p style="text-align:center; font-size: 18px; color: #d63384;">ไม่มีโพสอิทใดๆ</p>';
+        return;
+      }
+
+      notes.forEach((note, index) => {
+        const noteDiv = document.createElement('div');
+        noteDiv.classList.add('note');
+
+        // วันที่
+        const dateDiv = document.createElement('div');
+        dateDiv.classList.add('note-date');
+        dateDiv.textContent = `วันที่: ${note.date}`;
+
+        // เนื้อหาโน้ต
+        const noteTextDiv = document.createElement('div');
+        noteTextDiv.textContent = note.note;
+
+        // ปุ่มลบ
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('delete-btn');
+        deleteBtn.textContent = 'ลบ';
+        deleteBtn.onclick = () => {
+          if (confirm('ต้องการลบโพสอิทนี้จริงหรือไม่?')) {
+            deleteNote(index);
+          }
+        };
+
+        noteDiv.appendChild(deleteBtn);
+        noteDiv.appendChild(dateDiv);
+        noteDiv.appendChild(noteTextDiv);
+
+        container.appendChild(noteDiv);
+      });
+    }
+
+    // ฟังก์ชันลบโน้ตตาม index
+    function deleteNote(index) {
+      const notes = JSON.parse(localStorage.getItem('notes') || "[]");
+      notes.splice(index, 1);
+      localStorage.setItem('notes', JSON.stringify(notes));
+      loadNotes();
+    }
+
+    // โหลดโน้ตตอนเปิดหน้า
+    loadNotes();
+  </script>
+</body>
+</html>
