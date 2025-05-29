@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>เพิ่มโน้ตของคุณ</title>
   <style>
     @font-face {
@@ -29,14 +30,21 @@
       z-index: 10;
     }
 
+    form {
+      background: #ffffffcc;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 10;
+    }
+
     label {
       font-weight: bold;
       display: block;
       margin-top: 15px;
       margin-bottom: 5px;
       color: #a64f79;
-      position: relative;
-      z-index: 10;
     }
 
     input[type="date"], textarea {
@@ -47,16 +55,10 @@
       border-radius: 8px;
       background-color: #fff0f6;
       color: #333;
-      position: relative;
-      z-index: 10;
     }
 
     textarea {
-      height: 150px;
       resize: vertical;
-      margin-top: 5px;
-      white-space: pre-wrap;
-      overflow-wrap: break-word;
       min-height: 150px;
       max-height: 500px;
       overflow-y: auto;
@@ -72,8 +74,8 @@
       border-radius: 25px;
       cursor: pointer;
       transition: background-color 0.3s ease, transform 0.2s ease;
-      position: relative;
-      z-index: 10;
+      display: block;
+      width: 100%;
     }
 
     button:hover {
@@ -88,7 +90,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 0; /* อยู่ข้างหลังทุกอย่าง */
+      z-index: 0;
     }
 
     .falling {
@@ -106,6 +108,25 @@
       100% {
         transform: translateY(100vh) rotate(360deg);
         opacity: 0.6;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      form {
+        padding: 20px 15px;
+      }
+
+      input[type="date"], textarea, button {
+        font-size: 15px;
       }
     }
   </style>
@@ -127,7 +148,7 @@
   </form>
 
   <script>
-    // หิมะ
+    // หิมะแมว
     const imageSrc = "img/cat.png";
     const container = document.getElementById("snow-container");
 
@@ -140,9 +161,7 @@
       img.style.width = size + "px";
       img.style.animationDuration = (Math.random() * 3 + 5) + "s";
       container.appendChild(img);
-      setTimeout(() => {
-        img.remove();
-      }, 10000);
+      setTimeout(() => img.remove(), 10000);
     }
 
     setInterval(createSnowImage, 300);
@@ -154,18 +173,16 @@
       textarea.style.height = textarea.scrollHeight + 'px';
     });
 
-    // Handle form submission
+    // บันทึกโน้ต
     function handleNoteSubmit(event) {
-      event.preventDefault(); // ป้องกันการ submit ปกติ
+      event.preventDefault();
       const date = document.getElementById('date').value;
       const note = document.getElementById('note').value;
 
-      // เก็บโน้ตลง localStorage (เก็บเป็น array ของโน้ต)
       let notes = JSON.parse(localStorage.getItem('notes') || "[]");
       notes.push({ date, note });
       localStorage.setItem('notes', JSON.stringify(notes));
 
-      // ไปหน้า show_note.html
       window.location.href = "show_note.html";
     }
   </script>
