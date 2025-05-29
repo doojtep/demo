@@ -1,0 +1,20 @@
+{
+  "name": "โน้ตประจำวัน",
+  "short_name": "โน้ต",
+  "start_url": "note.html",
+  "display": "standalone",
+  "background_color": "#ffd6ec",
+  "theme_color": "#ffd6ec",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
